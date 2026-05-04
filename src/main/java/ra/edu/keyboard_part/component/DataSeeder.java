@@ -23,7 +23,6 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Kiểm tra xem database có trống không
         if (categoryService.countAll() == 0) {
             seedData();
             System.out.println("Dữ liệu mẫu đã được khởi tạo thành công!");
