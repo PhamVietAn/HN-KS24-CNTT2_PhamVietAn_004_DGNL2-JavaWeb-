@@ -19,38 +19,23 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Service cho quản lý Linh kiện Bàn phím
- * Xử lý các logic nghiệp vụ liên quan đến CRUD, tìm kiếm, lọc và upload file
- */
 @Service
 @Transactional
 public class KeyboardPartService {
     @Autowired
     private KeyboardPartRepository partRepository;
 
-    // Đường dẫn thư mục lưu trữ file upload (mặc định là "uploads")
     @Value("${file.upload.dir:uploads}")
     private String uploadDir;
 
-    /**
-     * Lưu mới một linh kiện bàn phím vào database
-     */
     public KeyboardPart save(KeyboardPart part) {
         return partRepository.save(part);
     }
 
-    /**
-     * Cập nhật thông tin linh kiện bàn phím
-     */
     public KeyboardPart update(KeyboardPart part) {
         return partRepository.save(part);
     }
 
-    /**
-     * Xóa linh kiện bàn phím theo ID
-     * Đồng thời xóa file ảnh liên quan nếu có
-     */
     public void delete(Long id) {
         Optional<KeyboardPart> part = partRepository.findById(id);
         if (part.isPresent()) {
@@ -63,34 +48,18 @@ public class KeyboardPartService {
         }
     }
 
-    /**
-     * Tìm linh kiện theo ID
-     */
     public Optional<KeyboardPart> findById(Long id) {
         return partRepository.findById(id);
     }
 
-    /**
-     * Lấy danh sách tất cả linh kiện có phân trang
-     */
     public Page<KeyboardPart> findAll(Pageable pageable) {
         return partRepository.findAll(pageable);
     }
 
-    /**
-     * Tìm linh kiện theo danh mục có phân trang
-     */
     public Page<KeyboardPart> findByCategory(ComponentCategory category, Pageable pageable) {
         return partRepository.findByCategory(category, pageable);
     }
 
-    /**
-     * Tìm kiếm linh kiện theo tên và danh mục (nếu có) với phân trang
-     * @param partName Tên linh kiện tìm kiếm (không phân biệt hoa thường)
-     * @param category Danh mục để lọc (có thể null để không lọc)
-     * @param pageable Thông tin phân trang
-     * @return Page chứa kết quả tìm kiếm
-     */
     public Page<KeyboardPart> search(String partName, ComponentCategory category, Pageable pageable) {
         if (category != null) {
             // Tìm theo cả tên và danh mục
@@ -101,19 +70,11 @@ public class KeyboardPartService {
         }
     }
 
-    /**
-     * Đếm tổng số linh kiện trong database
-     */
     public long countAll() {
         return partRepository.count();
     }
 
-    /**
-     * Upload file ảnh linh kiện
-     * @param file File ảnh được upload
-     * @return Tên file sau khi đổi tên (UUID + extension)
-     * @throws IOException Nếu có lỗi khi lưu file
-     */
+
     public String uploadFile(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return null;
@@ -137,10 +98,6 @@ public class KeyboardPartService {
         return newFilename;
     }
 
-    /**
-     * Xóa file ảnh từ đĩa
-     * @param filename Tên file cần xóa
-     */
     public void deleteFile(String filename) {
         try {
             Path filePath = Paths.get(uploadDir, filename);

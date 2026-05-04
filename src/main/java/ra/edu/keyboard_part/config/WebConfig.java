@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Lấy đường dẫn tuyệt đối của thư mục uploads
         String uploadDir = Paths.get("uploads").toAbsolutePath().toString();
 
         registry.addResourceHandler("/uploads/**")
